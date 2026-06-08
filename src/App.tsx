@@ -60,10 +60,8 @@ export default function App() {
   const [authError, setAuthError] = useState<string | null>(null);
 
   useEffect(() => {
-    // Expected token from environment or default
-    const expectedToken = (import.meta as any).env.VITE_ACCESS_TOKEN || "IventarioTI2026X";
+    const expectedToken = (import.meta as any).env.VITE_ACCESS_TOKEN || "";
 
-    // 1. Check if token is in the URL search params, e.g. ?token=IventarioTI2026X
     const params = new URLSearchParams(window.location.search);
     const tokenFromUrl = params.get("token");
 
@@ -89,7 +87,7 @@ export default function App() {
 
   const handleManualAuth = (e: React.FormEvent) => {
     e.preventDefault();
-    const expectedToken = (import.meta as any).env.VITE_ACCESS_TOKEN || "IventarioTI2026X";
+    const expectedToken = (import.meta as any).env.VITE_ACCESS_TOKEN || "";
     if (tokenInput.trim() === expectedToken) {
       localStorage.setItem("inventory_auth_token", tokenInput.trim());
       setIsAuthenticated(true);
