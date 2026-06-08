@@ -641,34 +641,6 @@ export default function App() {
   };
 
   // ---------------------------------------------
-  // RE-SEED DATA OPTION
-  // ---------------------------------------------
-  const handleResetToFactoryData = () => {
-    if (window.confirm("Aviso: Isso irá redefinir todo o banco de dados local para o estado inicial padrão de demonstração. Deseja continuar?")) {
-      localStorage.removeItem("ativos_inventory");
-      localStorage.removeItem("ativos_deliveries");
-      localStorage.removeItem("ativos_history");
-      localStorage.removeItem("ativos_discards");
-      localStorage.removeItem("ativos_sectors");
-      localStorage.removeItem("ativos_categories");
-      setInventory(INITIAL_INVENTORY);
-      setDeliveries(INITIAL_DELIVERIES);
-      setHistory(INITIAL_HISTORY);
-      setDiscards(INITIAL_DISCARDS);
-      setSectors(SECTORS);
-      setCategories([
-        "Notebooks",
-        "Monitores",
-        "Celulares",
-        "Periféricos",
-        "Acessórios",
-        "Servidores",
-        "Equipamentos de Rede",
-      ]);
-    }
-  };
-
-  // ---------------------------------------------
   // RENDER FILTERED LIST (Ativos Entregues Table)
   // ---------------------------------------------
   const filteredDeliveries = deliveries.filter((item) => {
@@ -795,7 +767,7 @@ export default function App() {
                 Este sistema armazena informações patrimoniais internas. Insira o token de segurança para continuar ou utilize uma URL pré-autorizada.
               </p>
               <p className="text-[10px] text-zinc-400 border-t border-zinc-200/60 pt-2 font-mono">
-                Dica: Para login automático, insira <span className="font-semibold text-zinc-650">?token=IventarioTI2026X</span> na URL.
+                Dica: se você tiver uma URL pré-autorizada, abra-a diretamente no navegador.
               </p>
             </div>
 
@@ -872,15 +844,6 @@ export default function App() {
           </div>
 
           <div className="flex items-center gap-2">
-            <button
-              onClick={handleResetToFactoryData}
-              title="Redefinir registros teste"
-              className="px-3 py-1.5 rounded-lg text-[10px] font-bold text-zinc-500 hover:text-zinc-900 border border-zinc-200 hover:bg-zinc-50 transition-all cursor-pointer flex items-center gap-1 leading-none uppercase tracking-wider h-9"
-            >
-              <RotateCcw className="h-3 w-3" />
-              Reset Demo
-            </button>
-
             <button
               onClick={() => setActiveTab("admin")}
               className={`px-3.5 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1.5 shadow-2xs border transition-all cursor-pointer h-9 ${
