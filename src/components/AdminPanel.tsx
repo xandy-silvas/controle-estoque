@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Settings, Plus, Trash2, MapPin, Layers, AlertCircle, CheckCircle2, Clock } from "lucide-react";
-import { HistoryLog, DiscardLog } from "../types";
+import { HistoryLog, DiscardLog, AssetDelivery } from "../types";
 import { HistoryLogs } from "./HistoryLogs";
 import { DiscardsList } from "./DiscardsList";
 
@@ -13,6 +13,9 @@ interface AdminPanelProps {
   onDeleteCategory: (category: string) => void;
   history: HistoryLog[];
   discards: DiscardLog[];
+  // New: allow admin panel to list current deliveries and request a discard action
+  deliveries?: AssetDelivery[];
+  onSelectForDiscard?: (delivery: AssetDelivery) => void;
 }
 
 export const AdminPanel: React.FC<AdminPanelProps> = ({
@@ -24,6 +27,8 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
   onDeleteCategory,
   history,
   discards,
+  deliveries,
+  onSelectForDiscard,
 }) => {
   const [activeSubTab, setActiveSubTab] = useState<"sectors" | "categories" | "history" | "discards">("sectors");
   
@@ -336,7 +341,39 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
       ) : activeSubTab === "history" ? (
         <HistoryLogs history={history} />
       ) : (
-        <DiscardsList discards={discards} />
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
+          <div className="md:col-span-5 bg-zinc-55/20 p-5 rounded-xl border border-zinc-150 space-y-4">
+            <h4 className="text-xs font-bold uppercase tracking-wider text-zinc-800">Registrar Descarte</h4>
+            <p className="text-[11px] text-zinc-500 mt-1">Selecione um ativo em posse de colaborador para registrar um descarte definitivo.</p>
+            <div className="max-h-[320px] overflow-y-auto mt-3 space-y-2">
+              {(deliveries && deliveries.length > 0 ? deliveries.filter(d => d.status !== 'Descartado' && d.status !== 'Devolvido') : []).map((d) => (
+                <div key={d.id} className="flex items-center justify-between bg-white p-2 rounded border border-zinc-100">
+                  <div className="text-xs">
+                    <div className="font-semibold">{d.itemName}</div>
+                    <div className="text-[11px] text-zinc-500">{d.colaborador} • {d.setor}</div>
+                  </div>
+                  <div>
+                    <button
+                      onClick={() => onSelectForDiscard && onSelectForDiscard(d)}
+                      className="px-2 py-1 rounded-md text-xs bg-rose-600 text-white hover:bg-rose-700 transition-all flex items-center gap-2"
+                      title="Registrar descarte deste ativo"
+                    >
+                      <Trash2 className="h-3 w-3" />
+                      <span>Registrar Descarte</span>
+                    </button>
+                  </div>
+                </div>
+              ))}
+              {(!deliveries || deliveries.filter(d => d.status !== 'Descartado' && d.status !== 'Devolvido').length === 0) && (
+                <p className="text-[12px] text-zinc-400">Nenhum ativo em posse pode ser marcado para descarte.</p>
+              )}
+            </div>
+          </div>
+
+          <div className="md:col-span-7">
+            <DiscardsList discards={discards} />
+          </div>
+        </div>
       )}
     </div>
   );

@@ -1131,14 +1131,7 @@ export default function App() {
                                   <Wrench className="h-3.5 w-3.5" />
                                 </button>
 
-                                {/* 4. Descartar Button */}
-                                <button
-                                  onClick={() => setSelectedDeliveryForDiscard(d)}
-                                  className="p-1.5 rounded-lg bg-zinc-50 text-rose-600 border border-zinc-200 hover:bg-rose-600 hover:text-white hover:border-rose-600 transition-all cursor-pointer"
-                                  title="Registrar descarte definitivo deste equipamento"
-                                >
-                                  <Trash2 className="h-3.5 w-3.5" />
-                                </button>
+                                {/* Descarte agora disponível apenas no Painel Admin (Descartados) */}
                               </div>
                             ) : (
                               <span className="text-3xs text-gray-400 font-bold uppercase tracking-wide italic p-1.5 block">
@@ -1183,6 +1176,8 @@ export default function App() {
             onDeleteCategory={handleDeleteCategory}
             history={history}
             discards={discards}
+            deliveries={deliveries}
+            onSelectForDiscard={(d) => setSelectedDeliveryForDiscard(d)}
           />
         )}
 
